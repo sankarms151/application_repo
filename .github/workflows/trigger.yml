@@ -1,0 +1,18 @@
+name: Notify cloudRepo on Changes
+
+on:
+  push:
+    branches:
+      - main
+      - AWS-release
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Trigger to cloudRepo
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.everest-preview+json" \
+          https://api.github.com/repos/your-username/InfraRepo/dispatches \
+          -d '{"event_type": "infra-update"}'
